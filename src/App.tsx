@@ -2,11 +2,13 @@ import { StrictMode } from 'react';
 
 import { createRoot } from 'react-dom/client';
 
-import TestComponent from 'components/TestComponent';
+import Main from 'components/Main';
+
+import 'normalize.css/normalize.css';
+import './styles/common.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <div>шаблон проекта</div>
-    <TestComponent />
+    <Main />
   </StrictMode>,
 );

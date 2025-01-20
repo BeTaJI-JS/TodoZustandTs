@@ -1,0 +1,59 @@
+.inputTask {
+  display: grid;
+  grid-template-columns: 1fr 50px 50px;
+  background: #dbe2ef;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  gap: 10px;
+
+  &Label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    padding: 12px 15px;
+  }
+
+  &Checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  &Title {
+    padding: 5px;
+    line-height: 1.2;
+  }
+
+  &EditTitle {
+    border: none;
+    box-shadow: 0 4px 0 -3px #3f72af;
+    padding: 5px;
+    background: none;
+  }
+
+  &Edit,
+  &Remove,
+  &Save {
+    border: none;
+    background: none;
+    cursor: pointer;
+    background: none no-repeat center center;
+  }
+
+  &Edit {
+    background-image: url("/editIcon.svg");
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &Remove {
+    background-image: url("/deleteIcon.svg");
+  }
+
+  &Save {
+    background-image: url("/checkIcon.svg");
+  }
+}

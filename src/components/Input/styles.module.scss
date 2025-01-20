@@ -1,0 +1,25 @@
+.inputTask {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 45px;
+  margin-bottom: 15px;
+
+  &Value {
+    border: 1px solid #b1b1b1;
+    border-radius: 5px;
+    padding: 9px 10px;
+    background: #dbe2ef;
+
+    &::placeholder {
+      color: #7b7b7b;
+    }
+  }
+
+  &Button {
+    border: none;
+    background-image: url("/addInputIcon.svg");
+    cursor: pointer;
+    border-radius: 5px;
+    background-repeat: no-repeat;
+  }
+}
