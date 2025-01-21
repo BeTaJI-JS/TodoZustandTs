@@ -1,10 +1,13 @@
 .inputTask {
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr 50px 50px;
+  grid-template-columns: 20px 1fr 50px 50px;
   background: #dbe2ef;
   border-radius: 5px;
   margin-bottom: 15px;
   gap: 10px;
+  padding: 10px;
+  align-items: center;
 
   &Label {
     display: grid;
@@ -22,6 +25,13 @@
   &Title {
     padding: 5px;
     line-height: 1.2;
+
+    &Done {
+      text-decoration: line-through;
+      color: gray;
+      font-weight: 400;
+      font-style: italic;
+    }
   }
 
   &EditTitle {
@@ -38,6 +48,8 @@
     background: none;
     cursor: pointer;
     background: none no-repeat center center;
+    height: max-content;
+    height: 50px; // высота нужна иначе сплющится
   }
 
   &Edit {
