@@ -4,6 +4,8 @@
   border-radius: 20px;
   padding: 20px;
 
+  max-height: calc(100vh - 40px);
+
   &Title {
     font-size: 40px;
     text-align: center;
@@ -39,6 +41,11 @@
     &Empty {
       text-align: center;
       color: #7b7b7b;
+    }
+
+    &Scroll {
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
     }
   }
 }

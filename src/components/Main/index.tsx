@@ -77,15 +77,17 @@ const Main = () => {
         <section className={styles.articleSection}>
           <Input onAddTask={createTask} />
         </section>
-        <section className={styles.articleSection}>
-          {!tasks.length ? (
-            <p className={styles.articleSectionEmpty}>Нет активных задач</p>
-          ) : (
-            filteredTasks.map((el) => (
-              <TodoItem item={el} key={el.id} onRemove={onRemove} onEdit={onEdit} onDone={onDone} />
-            ))
-          )}
-        </section>
+        <div className={styles.articleSectionScroll}>
+          <section className={styles.articleSection}>
+            {!tasks.length ? (
+              <p className={styles.articleSectionEmpty}>Нет активных задач</p>
+            ) : (
+              filteredTasks.map((el) => (
+                <TodoItem item={el} key={el.id} onRemove={onRemove} onEdit={onEdit} onDone={onDone} />
+              ))
+            )}
+          </section>
+        </div>
       </article>
       <Outlet />
     </>
