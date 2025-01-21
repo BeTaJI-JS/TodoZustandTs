@@ -1,0 +1,12 @@
+.analyticsContainer {
+  border: 2px solid red;
+
+  min-width: 50vw;
+}
+
+.homeIcon {
+  width: 50px; // удалить при рефакторинге
+  height: 50px;
+  background-image: url("/homeIcon.svg");
+  border: none;
+}

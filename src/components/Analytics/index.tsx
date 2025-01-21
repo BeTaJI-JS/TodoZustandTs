@@ -1,13 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Chart, registerables } from 'chart.js';
+import { Chart, ChartTypeRegistry, registerables } from 'chart.js';
 
 import { useTodoStore } from 'store/todoStore';
 
+import { filteredTasksHandler } from './helpers';
+import styles from './styles.module.scss';
+
 const Analytics: React.FC = () => {
+  const [diagramType, setDiagramType] = useState('pie');
+  const [filterType, setFilterType] = useState('День');
+
   const [tasks] = useTodoStore((state) => [state.tasks]);
+
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // для хранения экземпляра графика
+
+  const filteredTasks = useMemo(() => filteredTasksHandler(tasks, filterType), [tasks, filterType]);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -21,19 +30,24 @@ const Analytics: React.FC = () => {
         }
 
         // новый график
-        //TODO  придумать динамичский селект на странице с аналитикой, по дням(1 день, неделя, месяц), по выполнено/не выполнено
         chartInstanceRef.current = new Chart(ctx, {
-          type: 'pie',
+          type: diagramType as keyof ChartTypeRegistry,
           data: {
             labels: ['Done', 'Not done'],
             datasets: [
               {
                 label: 'Tasks',
-                data: [tasks.filter((task) => task.isDone).length, tasks.filter((task) => !task.isDone).length],
-                backgroundColor: ['rgba(74, 193, 82, 0.2)', 'rgba(230, 34, 63, 0.2)'],
+                data: [
+                  filteredTasks.filter((task) => task.isDone).length,
+                  filteredTasks.filter((task) => !task.isDone).length,
+                ],
+                backgroundColor: ['rgb(1, 254, 18)', 'rgba(250, 2, 2, 0.97)'],
               },
             ],
           },
+          // options: {
+          //TODO  ... поиграться со св--вами натсройки канваса в конце
+          // },
         });
       }
     }
@@ -44,11 +58,30 @@ const Analytics: React.FC = () => {
         chartInstanceRef.current.destroy();
       }
     };
-  }, [tasks]);
+  }, [tasks, diagramType, filteredTasks]);
 
   return (
-    <div>
-      <h2>Analytics</h2>
+    <div className={styles.analyticsContainer}>
+      <h2>Аналитика</h2>
+      <section>
+        <button className={styles.homeIcon} onClick={() => window.history.back()} />
+      </section>
+      <section>
+        <div>Тип графика</div>
+        <select onChange={(e) => setDiagramType(e.target.value)}>
+          <option value='pie'>Пирог</option>
+          <option value='line'>Линия</option>
+          <option value='polarArea'>Полярная</option>
+          <option value='radar'>Радар</option>
+          <option value='doughnut'>Пончик</option>
+        </select>
+        <div>Фильтры</div>
+        <select name='analytycsTask' onChange={(e) => setFilterType(e.target.value)}>
+          <option value='day'>День</option>
+          <option value='week'>Неделя</option>
+          <option value='month'>Месяц</option>
+        </select>
+      </section>
       <canvas ref={chartRef} />
     </div>
   );
