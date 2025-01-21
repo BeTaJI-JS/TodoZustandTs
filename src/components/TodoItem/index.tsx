@@ -8,18 +8,17 @@ interface TodoItemProps {
   id: number;
   title: string;
   createdAt: number;
+  isDone: boolean;
   onRemove: (id: number) => void;
   onEdit: (id: number, title: string) => void;
   onDone: (id: number) => void;
 }
-const TodoItem: React.FC<TodoItemProps> = ({ item, onRemove, onEdit, onDone }) => {
+const TodoItem: React.FC<TodoItemProps> = ({ id, title, isDone, onRemove, onEdit, onDone }) => {
   const [checked, setChecked] = useState(false);
   const [isEdit, setIsedit] = useState(false);
-  const [value, setValue] = useState(item.title);
+  const [value, setValue] = useState(title);
 
   const editInputRef = useRef<HTMLInputElement>(null);
-
-  console.log('tems', item);
 
   useEffect(() => {
     if (isEdit) {
@@ -47,19 +46,19 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onRemove, onEdit, onDone }) =
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                onEdit(item.id, value);
+                onEdit(id, value);
                 setIsedit(false);
               }
             }}
           />
         ) : (
           <h3
-            className={cn(styles.inputTaskTitle, { [styles.inputTaskTitleDone]: item.isDone })}
+            className={cn(styles.inputTaskTitle, { [styles.inputTaskTitleDone]: isDone })}
             onClick={() => {
-              onDone(item.id);
+              onDone(id);
             }}
           >
-            {item.title}
+            {title}
           </h3>
         )}
       </label>
@@ -68,7 +67,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onRemove, onEdit, onDone }) =
           aria-label='Save'
           className={styles.inputTaskSave}
           onClick={() => {
-            onEdit(item.id, value);
+            onEdit(id, value);
             setIsedit(false);
           }}
         />
@@ -85,7 +84,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onRemove, onEdit, onDone }) =
         className={styles.inputTaskRemove}
         onClick={() => {
           if (confirm('Вы уверены?')) {
-            onRemove(item.id);
+            onRemove(id);
           }
         }}
       />

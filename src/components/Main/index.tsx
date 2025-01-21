@@ -21,8 +21,6 @@ const Main = () => {
     state.onDone,
   ]);
 
-  console.log('tasks', tasks);
-
   const filteredTasks = useMemo(
     () =>
       tasks.filter((task) => {
@@ -40,15 +38,11 @@ const Main = () => {
   );
 
   console.log('filteredTasks', filteredTasks);
-  console.count('filteredTasks count');
-
-  // console.log('useTodoStore', useTodoStore);
 
   return (
     <>
       <article className={styles.article}>
         <h1 className={styles.articleTitle}>To do list</h1>
-
         <nav className={styles.articleNav}>
           <button
             className={cn(styles.articleNavBtn, { [styles.articleNavBtnActive]: filter === 'all' })}
@@ -83,7 +77,7 @@ const Main = () => {
               <p className={styles.articleSectionEmpty}>Нет активных задач</p>
             ) : (
               filteredTasks.map((el) => (
-                <TodoItem item={el} key={el.id} onRemove={onRemove} onEdit={onEdit} onDone={onDone} />
+                <TodoItem {...el} key={el.id} onRemove={onRemove} onEdit={onEdit} onDone={onDone} />
               ))
             )}
           </section>
