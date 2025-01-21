@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Chart, registerables } from 'chart.js';
 
@@ -30,7 +30,7 @@ const Analytics: React.FC = () => {
               {
                 label: 'Tasks',
                 data: [tasks.filter((task) => task.isDone).length, tasks.filter((task) => !task.isDone).length],
-                backgroundColor: ['rgba(255, 98, 0, 0.2)', 'rgba(255, 16, 52, 0.2)'],
+                backgroundColor: ['rgba(74, 193, 82, 0.2)', 'rgba(230, 34, 63, 0.2)'],
               },
             ],
           },

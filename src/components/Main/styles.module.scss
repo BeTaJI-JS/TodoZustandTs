@@ -9,6 +9,32 @@
     text-align: center;
   }
 
+  &Nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    &Btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: 700;
+
+      &Active {
+        color: #3f72af;
+        text-decoration: underline;
+      }
+    }
+
+    &Link {
+      text-decoration: none;
+
+      &:visited {
+        color: black;
+      }
+    }
+  }
+
   &Section {
     &Empty {
       text-align: center;
