@@ -4,6 +4,7 @@
     "paths": {
       "components/*": ["src/components/*"],
       "assets/*": ["src/assets/*"],
+      "helpers": ["src/helpers/"],
       "helpers/*": ["src/helpers/*"],
       "hooks/*": ["src/hooks/*"],
       "store/*": ["src/store/*"],

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 
 import { Chart, ChartTypeRegistry, registerables } from 'chart.js';
-
-import { filteredTasksHandler } from 'components/Analytics/helpers';
+import { filteredTasksHandler } from 'helpers';
 
 import { useTodoStore } from 'store/todoStore';
 
