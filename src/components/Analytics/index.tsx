@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import ChartItem from 'components/ChartItem';
 
 import styles from './styles.module.scss';
@@ -16,6 +18,9 @@ const Analytics: React.FC = () => {
       <section>
         <button className={styles.homeIcon} onClick={() => window.history.back()} />
       </section>
+      <button>
+        <Link to='/weatherApi'>Погода API</Link>
+      </button>
       <section>
         <div>Тип графика</div>
         <select onChange={(e) => setDiagramType(e.target.value)}>
