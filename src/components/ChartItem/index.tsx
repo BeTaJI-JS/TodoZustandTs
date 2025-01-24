@@ -1,27 +1,14 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { Chart, ChartTypeRegistry, registerables } from 'chart.js';
-import { filteredTasksHandler } from 'helpers';
+import { Chart, registerables } from 'chart.js';
 
-import { useTodoStore } from 'store/todoStore';
-
-//! Переписать на нормальный конфиг который будет универсальным а не это
-interface ChartItemProps {
-  config: {
-    filterType: string;
-    diagramType: string;
-  };
-}
+import { ChartItemProps } from './model';
 
 const ChartItem = ({ config }: ChartItemProps) => {
-  const { filterType, diagramType } = config;
+  console.log('chartConfig', config);
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // для хранения экземпляра графика
-
-  const [tasks] = useTodoStore((state) => [state.tasks]);
-
-  const filteredTasks = useMemo(() => filteredTasksHandler(tasks, filterType), [tasks, filterType]);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -34,25 +21,9 @@ const ChartItem = ({ config }: ChartItemProps) => {
           chartInstanceRef.current.destroy();
         }
 
-        // новый график
+        // новый график c полученным конфигом
         chartInstanceRef.current = new Chart(ctx, {
-          type: diagramType as keyof ChartTypeRegistry,
-          data: {
-            labels: ['Done', 'Not done'],
-            datasets: [
-              {
-                label: 'Tasks',
-                data: [
-                  filteredTasks.filter((task) => task.isDone).length,
-                  filteredTasks.filter((task) => !task.isDone).length,
-                ],
-                backgroundColor: ['rgb(1, 254, 18)', 'rgba(250, 2, 2, 0.97)'],
-              },
-            ],
-          },
-          // options: {
-          //TODO  ... поиграться со св--вами натсройки канваса в конце
-          // },
+          ...config,
         });
       }
     }
@@ -63,7 +34,7 @@ const ChartItem = ({ config }: ChartItemProps) => {
         chartInstanceRef.current.destroy();
       }
     };
-  }, [tasks, diagramType, filteredTasks]);
+  }, [config]);
 
   return (
     <>

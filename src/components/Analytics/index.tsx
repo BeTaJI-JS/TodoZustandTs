@@ -1,8 +1,12 @@
 import React, { useMemo, useState } from 'react';
 
+import { filteredTasksHandler } from 'helpers';
 import { Link } from 'react-router-dom';
 
 import ChartItem from 'components/ChartItem';
+import { ChartConfig } from 'components/ChartItem/model';
+
+import { useTodoStore } from 'store/todoStore';
 
 import styles from './styles.module.scss';
 
@@ -10,7 +14,29 @@ const Analytics: React.FC = () => {
   const [diagramType, setDiagramType] = useState('pie');
   const [filterType, setFilterType] = useState('День');
 
-  const configChart = useMemo(() => ({ diagramType, filterType }), [diagramType, filterType]);
+  const [tasks] = useTodoStore((state) => [state.tasks]);
+
+  const filteredTasks = useMemo(() => filteredTasksHandler(tasks, filterType), [tasks, filterType]);
+
+  const configChart = useMemo(
+    () => ({
+      type: diagramType,
+      data: {
+        labels: ['Done', 'Not done'],
+        datasets: [
+          {
+            label: 'Tasks',
+            data: [
+              filteredTasks.filter((task) => task.isDone).length,
+              filteredTasks.filter((task) => !task.isDone).length,
+            ],
+            backgroundColor: ['rgb(1, 254, 18)', 'rgba(250, 2, 2, 0.97)'],
+          },
+        ],
+      },
+    }),
+    [diagramType, filteredTasks],
+  );
 
   return (
     <div className={styles.analyticsContainer}>
@@ -37,7 +63,7 @@ const Analytics: React.FC = () => {
           <option value='month'>Месяц</option>
         </select>
       </section>
-      <ChartItem config={configChart} />
+      <ChartItem config={configChart as ChartConfig} />
     </div>
   );
 };
