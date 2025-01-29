@@ -16,6 +16,12 @@ const ChartItem = ({ config }: ChartItemProps) => {
       if (ctx) {
         Chart.register(...registerables);
 
+        if (config.plugins && Array.isArray(config.plugins) && config.plugins.length > 0) {
+          config.plugins.forEach((plugin) => {
+            Chart.register(plugin);
+          });
+        }
+
         // Если экземпляр графика уже есть - удалить его
         if (chartInstanceRef.current) {
           chartInstanceRef.current.destroy();
