@@ -34,6 +34,56 @@ const Analytics: React.FC = () => {
           },
         ],
       },
+      options: {
+        responsive: true,
+        // maintainAspectRatio: false, // Позволяет изменять размер диаграммы
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: 'rgb(23, 23, 24)', // Цвет текста легенды
+              font: {
+                // font props : family , size, style, weight,lineHeight
+                size: 16, // Размер шрифта легенды
+                family: '"Roboto", sans-serif', // Шрифт легенды
+                weight: 700, // Толщина шрифта
+                lineHeight: 1.2, // Расстояние между строками
+                style: 'italic',
+              },
+              // useBorderRadius: true, //! не работает
+              // borderRadius: '400px', //! не работает
+            },
+          },
+          title: {
+            // title props: color, display,font, size, text
+            display: true,
+            text: 'Статус задач',
+            color: 'rgb(23, 23, 24)', // Цвет текста заголовка легенды
+            font: {
+              size: 20,
+              family: '"Roboto", sans-serif',
+              style: 'italic',
+            },
+          },
+          tooltip: {
+            // enabled: false,
+            backgroundColor: 'rgba(19, 20, 19, 0.7)', // Цвет фона подсказок
+            titleColor: 'white', // Цвет заголовка подсказки
+            bodyColor: 'white', // Цвет текста подсказки
+            // footerColor: 'white', // Цвет нижнего текста подсказки // нет смысла
+            borderWidth: 2, // Толщина границ
+            borderColor: 'white', // Цвет границы подсказки
+            bodyFont: {
+              size: 16, // Размер шрифта подсказки
+              family: '"Roboto", sans-serif', // Шрифт подсказки
+              weight: 700, // Толщина шрифта
+              lineHeight: 1.2, // Расстояние между строками
+              style: 'italic',
+            },
+          },
+        },
+      },
     }),
     [diagramType, filteredTasks],
   );

@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Chart, registerables } from 'chart.js';
+
+import ChartItem from 'components/ChartItem';
+import { ChartConfig } from 'components/ChartItem/model';
 
 const WeatherPage = () => {
   const [weatherData1, setWeatherData1] = useState<any>(null);
@@ -14,8 +17,8 @@ const WeatherPage = () => {
   const apiKey1 = import.meta.env.VITE_API_KEY_1;
   const apiKey2 = import.meta.env.VITE_API_KEY_2;
 
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstanceRef = useRef<Chart | null>(null); // для хранения экземпляра графика
+  // const chartRef = useRef<HTMLCanvasElement>(null);
+  // const chartInstanceRef = useRef<Chart | null>(null); // для хранения экземпляра графика
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -42,47 +45,70 @@ const WeatherPage = () => {
     fetchWeatherData();
   }, [city, apiKey1, apiKey2]);
 
-  useEffect(() => {
-    if (chartRef.current) {
-      const ctx = chartRef.current.getContext('2d');
-      if (ctx) {
-        Chart.register(...registerables);
-
-        // Если экземпляр графика уже есть - удалить его
-        if (chartInstanceRef.current) {
-          chartInstanceRef.current.destroy();
-        }
-
-        // новый график
-        chartInstanceRef.current = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['OpenWeatherMap', 'WeatherAPI'],
-            datasets: [
-              {
-                label: 'Temperature',
-                data: [weatherData1.main?.temp || 0, weatherData2.current?.temp_c || 0],
-                backgroundColor: ['rgba(252, 255, 81, 0.4)', 'rgba(170, 114, 238, 0.4)'],
-                borderColor: ['rgb(114, 192, 75)'],
-                borderWidth: 1,
-                //  я хочу сделать цет текста labels разными
-              },
-            ],
+  const configChart = useMemo(
+    () => ({
+      type: 'bar',
+      data: {
+        labels: ['OpenWeatherMap', 'WeatherAPI'],
+        datasets: [
+          {
+            label: 'Temperature',
+            data: weatherData1 && weatherData2 && [(weatherData1.main?.temp || 0, weatherData2.current?.temp_c || 0)],
+            backgroundColor: ['rgba(252, 255, 81, 0.4)', 'rgba(170, 114, 238, 0.4)'],
+            borderColor: ['rgb(114, 192, 75)'],
+            borderWidth: 1,
+            //  я хочу сделать цет текста labels разными
           },
-          // options: {
-          //TODO  ... поиграться со св--вами натсройки канваса в конце
-          // },
-        });
-      }
-    }
+        ],
+      },
+      // options: {
+      //TODO  ... поиграться со св--вами натсройки канваса в конце
+      // },
+    }),
+    [weatherData1, weatherData2],
+  );
 
-    // Очистка при размонтировании компонента удалять канвас
-    return () => {
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy();
-      }
-    };
-  }, [weatherData1, weatherData2]);
+  // useEffect(() => {
+  //   if (chartRef.current) {
+  //     const ctx = chartRef.current.getContext('2d');
+  //     if (ctx) {
+  //       Chart.register(...registerables);
+
+  //       // Если экземпляр графика уже есть - удалить его
+  //       if (chartInstanceRef.current) {
+  //         chartInstanceRef.current.destroy();
+  //       }
+
+  //       // новый график
+  //       chartInstanceRef.current = new Chart(ctx, {
+  //         type: 'bar',
+  //         data: {
+  //           labels: ['OpenWeatherMap', 'WeatherAPI'],
+  //           datasets: [
+  //             {
+  //               label: 'Temperature',
+  //               data: [weatherData1.main?.temp || 0, weatherData2.current?.temp_c || 0],
+  //               backgroundColor: ['rgba(252, 255, 81, 0.4)', 'rgba(170, 114, 238, 0.4)'],
+  //               borderColor: ['rgb(114, 192, 75)'],
+  //               borderWidth: 1,
+  //               //  я хочу сделать цет текста labels разными
+  //             },
+  //           ],
+  //         },
+  //         // options: {
+  //         //TODO  ... поиграться со св--вами натсройки канваса в конце
+  //         // },
+  //       });
+  //     }
+  //   }
+
+  //   // Очистка при размонтировании компонента удалять канвас
+  //   return () => {
+  //     if (chartInstanceRef.current) {
+  //       chartInstanceRef.current.destroy();
+  //     }
+  //   };
+  // }, [weatherData1, weatherData2]);
 
   if (loading) return <div>Loading...</div>;
   if (!weatherData1 || !weatherData2) return <div>Error loading data</div>;
@@ -93,7 +119,8 @@ const WeatherPage = () => {
       <section>
         <button onClick={() => window.history.back()} />
       </section>
-      <canvas ref={chartRef} />
+      {/* <canvas ref={chartRef} /> */}
+      {/* <ChartItem config={configChart as ChartConfig} /> */}
     </div>
   );
 };
